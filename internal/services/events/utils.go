@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	models "github.com/Iknite-space/cliqets-api/internal/models/event"
+	models "github.com/namkatcedrickjumtock/sigma-auto-api/internal/models/event"
 )
 
 func getTicketPrice(event []models.Ticket, ticketType string, qty int64) (int64, int64, error) {

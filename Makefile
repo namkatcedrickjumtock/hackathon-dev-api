@@ -6,7 +6,6 @@ install-tools:
 	fi
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.49.0
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.1
-	go install github.com/golang/mock/mockgen@v1.6.0
 	if [ ! $$( which migrate ) ]; then \
 		echo "The 'migrate' command was not found in your path. You most likely need to add \$$HOME/go/bin to your PATH."; \
 		exit 1; \
@@ -43,7 +42,7 @@ create-migration: ## usage: make name=new create-migration
 
 database:
 	# if [ "$$( docker container inspect -f '{{.State.Running}}' cliqets-api-db )" != "true" ]; then \
-	# 	docker run -d --name cliqets-api-db  -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=cliqets -e PGDATA=/var/lib/postgresql/data/pgdata/cliqets -v $$(pwd)/pg_data:/var/lib/postgresql/data/cliqets  -p 5432:5432 -it postgres:14; \
+	# 	docker run -d --name sigma-api-db  -e POSTGRES_USER=sigma -e POSTGRES_PASSWORD=sigma@123 -e POSTGRES_DB=sigma-auto -e PGDATA=/var/lib/postgresql/data/pgdata/cliqets -v $$(pwd)/pg_data:/var/lib/postgresql/data/cliqets  -p 5432:5432 -it postgres:14; \
 	# fi
 
 	# if [ "$$( docker container inspect -f '{{.State.Running}}' pg-admin )" != "true" ]; then \

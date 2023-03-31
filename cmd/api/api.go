@@ -7,12 +7,12 @@ import (
 	"log"
 	"os"
 
-	"github.com/Iknite-space/cliqets-api/internal/api"
-	"github.com/Iknite-space/cliqets-api/internal/persistence"
-	"github.com/Iknite-space/cliqets-api/internal/services/events"
-	"github.com/Iknite-space/cliqets-api/internal/services/payments"
 	"github.com/ardanlabs/conf/v3"
 	"github.com/joho/godotenv"
+	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/api"
+	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/persistence"
+	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/events"
+	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/payments"
 )
 
 func main() {

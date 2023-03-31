@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	paymentModels "github.com/Iknite-space/cliqets-api/internal/models/payments"
+	paymentModels "github.com/namkatcedrickjumtock/sigma-auto-api/internal/models/payments"
 	"github.com/rs/zerolog"
 )
 

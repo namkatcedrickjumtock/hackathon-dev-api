@@ -2,13 +2,13 @@ version: '3.5'
 
 services:
   postgres:
-    container_name: delta-lima-db
+    container_name: sigma-cx-db
     image: postgres:14
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-sigma}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sigma@123}
       PGDATA: /data/postgres
-      POSTGRES_DB: cliqets
+      POSTGRES_DB: sigma-auto
     # volumes:
        #- postgres:/data/postgres
     ports:
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
   
   pgadmin:
-    container_name: pg-admin
+    container_name: sigma-pgAdmin
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-silasmagho18@gmail.com}

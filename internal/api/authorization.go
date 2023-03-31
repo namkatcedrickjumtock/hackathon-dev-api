@@ -11,7 +11,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-var PublicPathRegex = regexp.MustCompile("^/(events|current_city|webhook|health_check|categories|tickets|event)")
+var PublicPathRegex = regexp.MustCompile("^/(cars)")
 
 type AccessTokenCustomClaims struct {
 	UserID string `json:"user_id"`
