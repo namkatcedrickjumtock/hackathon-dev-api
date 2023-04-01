@@ -11,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/api"
 	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/persistence"
-	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/events"
+	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/cars"
 	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/payments"
 )
 
@@ -90,7 +90,7 @@ func run() error {
 		return err
 	}
 
-	eventService, err := events.NewService(repo, pymentService, cfg.Payments.WebHookAppKey)
+	eventService, err := cars.NewService(repo, pymentService, cfg.Payments.WebHookAppKey)
 	if err != nil {
 		return err
 	}
