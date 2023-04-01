@@ -21,6 +21,8 @@ type Service interface {
 	GetCarsByID(ctx context.Context, carID string) (*models.Cars, error)
 	PlaceBid(ctx context.Context, bid models.Bids) (*models.Bids, error)
 	GetBidByID(ctx context.Context, bidID string) (*models.Bids, error)
+	GetUserByID(ctx context.Context, userID string) (*models.Users, error)
+	CreateUser(ctx context.Context, user models.Users) (*models.Users, error)
 }
 
 type ServiceImpl struct {
@@ -89,3 +91,21 @@ func (s *ServiceImpl) GetBidByID(ctx context.Context, bidID string) (*models.Bid
 	}
 	return bid, nil
 }
+
+// CreateUser(ctx context.Context, user models.Sellers) (*models.Sellers, error)
+func (s *ServiceImpl) GetUserByID(ctx context.Context, userID string) (*models.Users, error) {
+	user, err := s.repo.GetUserByID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (s *ServiceImpl) CreateUser(ctx context.Context, user models.Users) (*models.Users, error) {
+	newUser, err := s.repo.CreateUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return newUser, nil
+}
+

@@ -72,7 +72,6 @@ POST  `/register/car`{
 }
 
 POST  `/bid/:id`{
-
     card_id:string,
     amount:string,
     user_name:string,

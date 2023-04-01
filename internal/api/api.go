@@ -132,18 +132,58 @@ func NewAPIListener(carService cars.Service, disableAuthorization bool, allowedO
 
 	router.POST("/user", func(ctx *gin.Context) {
 
+
+		var user models.Users
+
+		if err := ctx.ShouldBindBodyWith(&user, binding.JSON); err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: "internal server error please try again: " + err.Error(),
+			})
+			return
+		}
+
+		users, err := carService.CreateUser(ctx, user)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, users)
+
 	})
 
-	router.GET("/user", func(ctx *gin.Context) {
+	router.GET("/user/:id", func(ctx *gin.Context) {
+		userID := ctx.Param("id")
+
+		if userID == "" {
+			ctx.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Error: "car id is a required param",
+			})
+			return
+		}
+
+		user, err := carService.GetUserByID(ctx, userID)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, user)
 
 	})
+
+
 
 	router.GET("/bid/:id", func(ctx *gin.Context) {
 		bidID := ctx.Param("id")
 
 		if bidID == "" {
 			ctx.JSON(http.StatusBadRequest, models.ErrorResponse{
-				Error: "car id is a required param",
+				Error: "bid id is a required param",
 			})
 			return
 		}

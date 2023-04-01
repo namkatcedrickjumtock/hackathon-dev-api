@@ -24,6 +24,8 @@ type Repository interface {
 	GetCarsByID(ctx context.Context, carID string) (*models.Cars, error)
 	PlaceBid(ctx context.Context, bid models.Bids) (*models.Bids, error)
 	GetBidByID(ctx context.Context, bidID string) (*models.Bids, error)
+	GetUserByID(ctx context.Context, userID string) (*models.Users, error)
+	CreateUser(ctx context.Context, user models.Users) (*models.Users, error)
 }
 
 // carRow contains the columns for an event.
@@ -121,4 +123,24 @@ func (r *RepositoryPg) GetBidByID(ctx context.Context, bidID string) (*models.Bi
 		return nil, err
 	}
 	return &bids, nil
+}
+
+func (r *RepositoryPg) CreateUser(ctx context.Context, user models.Users) (*models.Users, error) {
+	newUser := models.Users{}
+
+	err := r.db.GetContext(ctx, &newUser, `INSERT INTO users(user_id,user_name,user_email) VALUES($1,$2,$3) RETURNING user_id,user_name,user_email`, user.User_id, user.UserName, user.Email)
+
+	if err != nil {
+		return nil, err
+	}
+	return &newUser, nil
+}
+
+func (r *RepositoryPg) GetUserByID(ctx context.Context, userID string) (*models.Users, error) {
+	user := models.Users{}
+	err := r.db.GetContext(ctx, &user, `SELECT * FROM users WHERE user_id=$1`, userID)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
