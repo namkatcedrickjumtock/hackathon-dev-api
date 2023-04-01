@@ -21,9 +21,9 @@ func NewAPIListener(carService cars.Service, disableAuthorization bool, allowedO
 
 	router.Use(cors.New(config))
 
-	// if !disableAuthorization {
-	// 	router.Use(AuthorizeRequest)
-	// }
+	if !disableAuthorization {
+		router.Use(AuthorizeRequest)
+	}
 
 	// get all cars
 	router.GET("/cars", func(ctx *gin.Context) {
