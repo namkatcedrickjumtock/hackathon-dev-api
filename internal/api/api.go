@@ -107,5 +107,62 @@ func NewAPIListener(carService cars.Service, disableAuthorization bool, allowedO
 		ctx.JSON(http.StatusOK, car)
 	})
 
+	router.POST("/bid", func(ctx *gin.Context) {
+
+		var bids models.Bids
+
+		if err := ctx.ShouldBindBodyWith(&bids, binding.JSON); err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: "internal server error please try again: " + err.Error(),
+			})
+			return
+		}
+
+		car, err := carService.PlaceBid(ctx, bids)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, car)
+
+	})
+
+	router.POST("/user", func(ctx *gin.Context) {
+
+	})
+
+	router.GET("/user", func(ctx *gin.Context) {
+
+	})
+
+	router.GET("/bid/:id", func(ctx *gin.Context) {
+		bidID := ctx.Param("id")
+
+		if bidID == "" {
+			ctx.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Error: "car id is a required param",
+			})
+			return
+		}
+
+		bid, err := carService.GetBidByID(ctx, bidID)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, bid)
+
+	})
+
+	router.GET("/webhook/campay/payments", func(ctx *gin.Context) {
+
+	})
+
 	return router, nil
 }

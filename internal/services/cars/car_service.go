@@ -19,6 +19,8 @@ type Service interface {
 	// UpdateCar(ctx context.Context, updatePayLoad models.Cars, carID string) (*models.Cars, error)
 	RegisterCar(ctx context.Context, carPayload models.Cars) (*models.Cars, error)
 	GetCarsByID(ctx context.Context, carID string) (*models.Cars, error)
+	PlaceBid(ctx context.Context, bid models.Bids) (*models.Bids, error)
+	GetBidByID(ctx context.Context, bidID string) (*models.Bids, error)
 }
 
 type ServiceImpl struct {
@@ -64,11 +66,26 @@ func (s *ServiceImpl) RegisterCar(ctx context.Context, carPayload models.Cars) (
 	return newRegisteredCar, nil
 }
 
-
 func (s *ServiceImpl) GetCarsByID(ctx context.Context, carID string) (*models.Cars, error) {
 	car, err := s.repo.GetCarsByID(ctx, carID)
 	if err != nil {
 		return nil, err
 	}
 	return car, nil
+}
+
+func (s *ServiceImpl) PlaceBid(ctx context.Context, bid models.Bids) (*models.Bids, error) {
+	bids, err := s.repo.PlaceBid(ctx, bid)
+	if err != nil {
+		return nil, err
+	}
+	return bids, nil
+}
+
+func (s *ServiceImpl) GetBidByID(ctx context.Context, bidID string) (*models.Bids, error) {
+	bid, err := s.repo.GetBidByID(ctx, bidID)
+	if err != nil {
+		return nil, err
+	}
+	return bid, nil
 }
