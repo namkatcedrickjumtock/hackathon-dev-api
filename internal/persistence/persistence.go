@@ -22,6 +22,8 @@ type Repository interface {
 	UpdateCar(ctx context.Context, updatePayLoad models.Cars, carID string) (*models.Cars, error)
 	RegisterCar(ctx context.Context, carPayload models.Cars) (*models.Cars, error)
 	GetCarsByID(ctx context.Context, carID string) (*models.Cars, error)
+	PlaceBid(ctx context.Context, bid models.Bids) (*models.Bids, error)
+	GetBidByID(ctx context.Context, bidID string) (*models.Bids, error)
 }
 
 // carRow contains the columns for an event.
@@ -99,4 +101,24 @@ func (r *RepositoryPg) UpdateCar(ctx context.Context, updatePayLoad models.Cars,
 	row.Properties.ID = row.ID
 
 	return row.Properties, nil
+}
+
+func (r *RepositoryPg) PlaceBid(ctx context.Context, bid models.Bids) (*models.Bids, error) {
+	createdBid := models.Bids{}
+	err := r.db.GetContext(ctx, &createdBid, `INSERT INTO bids(car_id, bid_amount,email,user_name) VALUES($1,$2,$3,$4)RETURNING bid_id, car_id, bid_amount,email,user_name, created_at`, bid.CarID, bid.Amount, bid.Email, bid.UserName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdBid, nil
+}
+
+func (r *RepositoryPg) GetBidByID(ctx context.Context, bidID string) (*models.Bids, error) {
+	bids := models.Bids{}
+	err := r.db.GetContext(ctx, &bids, `SELECT * FROM bids WHERE bid_id=$1`, bidID)
+	if err != nil {
+		return nil, err
+	}
+	return &bids, nil
 }

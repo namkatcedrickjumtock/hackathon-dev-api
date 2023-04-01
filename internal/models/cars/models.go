@@ -16,6 +16,7 @@ type Cars struct {
 	CityID            string `json:"city_id"`
 	EngineType        string `json:"engine_type"`
 	CarModel          string `json:"car_model"`
+	NumberOfBids          string `json:"number_of_bids"`
 	Mileage           string `json:"mileage"`
 	FuelType          string `json:"fuel_type"`
 	CarphotoUrl       string `json:"photo_url"`
@@ -30,6 +31,7 @@ type Sellers struct {
 type Bids struct {
 	BidID    string `json:"bid_id" db:"bid_id"`
 	CarID    string `json:"car_id" db:"car_id"`
+	CreatedAt    string `json:"created_at" db:"created_at"`
 	Amount   string `json:"bid_amount" db:"bid_amount"`
 	Email    string `json:"email" db:"email"`
 	UserName string `json:"user_name" db:"user_name"`
