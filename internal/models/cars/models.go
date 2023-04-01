@@ -16,13 +16,15 @@ type Cars struct {
 	CityID            string `json:"city_id"`
 	EngineType        string `json:"engine_type"`
 	CarModel          string `json:"car_model"`
-	NumberOfBids      string `json:"number_of_bids"`
+	NumberOfBids          string `json:"number_of_bids"`
 	Mileage           string `json:"mileage"`
 	FuelType          string `json:"fuel_type"`
 	CarphotoUrl       string `json:"photo_url"`
 	Category          string `json:"category"`
 	Description       string `json:"description"`
 }
+
+
 type Users struct {
 	User_id  string `json:"user_id" db:"user_id"`
 	UserName string `json:"user_name" db:"user_name"`

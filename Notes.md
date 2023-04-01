@@ -70,7 +70,8 @@ POST  `/register/car`{
     bid_expiration:string
 }
 }
-POST  `/bid/place_bid`{
+
+POST  `/bid/:id`{
     card_id:string,
     amount:string,
     user_name:string,

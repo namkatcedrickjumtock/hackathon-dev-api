@@ -108,3 +108,4 @@ func (s *ServiceImpl) CreateUser(ctx context.Context, user models.Users) (*model
 	}
 	return newUser, nil
 }
+

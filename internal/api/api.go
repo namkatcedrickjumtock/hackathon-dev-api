@@ -132,6 +132,7 @@ func NewAPIListener(carService cars.Service, disableAuthorization bool, allowedO
 
 	router.POST("/user", func(ctx *gin.Context) {
 
+
 		var user models.Users
 
 		if err := ctx.ShouldBindBodyWith(&user, binding.JSON); err != nil {
@@ -174,6 +175,8 @@ func NewAPIListener(carService cars.Service, disableAuthorization bool, allowedO
 		ctx.JSON(http.StatusOK, user)
 
 	})
+
+
 
 	router.GET("/bid/:id", func(ctx *gin.Context) {
 		bidID := ctx.Param("id")
