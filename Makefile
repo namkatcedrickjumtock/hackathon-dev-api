@@ -4,15 +4,13 @@ install-tools:
 		echo "Try installing go..."; \
 		exit 1; \
 	fi
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.49.0
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.1
 	if [ ! $$( which migrate ) ]; then \
 		echo "The 'migrate' command was not found in your path. You most likely need to add \$$HOME/go/bin to your PATH."; \
 		exit 1; \
 	fi
 
-lint:
-	golangci-lint run ./...
+
 
 tidy:
 	go mod tidy

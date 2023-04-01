@@ -6,12 +6,13 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	models "github.com/namkatcedrickjumtock/sigma-auto-api/internal/models/event"
-	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/events"
+	"github.com/gin-gonic/gin/binding"
+	models "github.com/namkatcedrickjumtock/sigma-auto-api/internal/models/cars"
+	"github.com/namkatcedrickjumtock/sigma-auto-api/internal/services/cars"
 )
 
 //nolint:gocyclo, funlen
-func NewAPIListener(eventService events.Service, disableAuthorization bool, allowedOrigins string) (*gin.Engine, error) {
+func NewAPIListener(carService cars.Service, disableAuthorization bool, allowedOrigins string) (*gin.Engine, error) {
 	router := gin.Default()
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{allowedOrigins}
@@ -24,14 +25,13 @@ func NewAPIListener(eventService events.Service, disableAuthorization bool, allo
 		router.Use(AuthorizeRequest)
 	}
 
-	// route
-	router.GET("/events", func(ctx *gin.Context) {
+	// get all cars
+	router.GET("/cars", func(ctx *gin.Context) {
 		// params
 		cityID := ctx.Query("city_id")
 		categoryID := ctx.Query("category_id")
 
 		// convert params types
-		//nolint
 		startKey, err := strconv.ParseUint(ctx.Query("start_key"), 10, 64)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, models.ErrorResponse{
@@ -55,14 +55,56 @@ func NewAPIListener(eventService events.Service, disableAuthorization bool, allo
 			return
 		}
 
-		event, err := eventService.GetAllEvents(ctx, cityID, categoryID, uint(startKey), uint(count))
+		cars, err := carService.GetAllCars(ctx, cityID, categoryID, uint(startKey), uint(count))
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
 				Error: err.Error(),
 			})
 			return
 		}
-		ctx.JSON(http.StatusOK, event)
+		ctx.JSON(http.StatusOK, cars)
+	})
+	// get car by id.
+	router.GET("/cars/:id", func(ctx *gin.Context) {
+		carID := ctx.Param("id")
+
+		if carID == "" {
+			ctx.JSON(http.StatusBadRequest, models.ErrorResponse{
+				Error: "car id is a required param",
+			})
+			return
+		}
+		car, err := carService.GetCarsByID(ctx, carID)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: err.Error(),
+			})
+			return
+		}
+		ctx.JSON(http.StatusOK, car)
+	})
+
+	// register new car.
+	router.POST("/register/car", func(ctx *gin.Context) {
+		var newCar models.Cars
+
+		if err := ctx.ShouldBindBodyWith(&newCar, binding.JSON); err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: "internal server error please try again: " + err.Error(),
+			})
+			return
+		}
+
+		car, err := carService.RegisterCar(ctx, newCar)
+
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, models.ErrorResponse{
+				Error: err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, car)
 	})
 
 	return router, nil
