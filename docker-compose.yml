@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-sigma}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sigma@123}
       PGDATA: /data/postgres
-      POSTGRES_DB: sigma-auto
+      POSTGRES_DB: sigma-db
     # volumes:
        #- postgres:/data/postgres
     ports:
